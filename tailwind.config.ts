@@ -52,11 +52,55 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // カレーアプリのカラーパレット
+        "primary-orange": "#FF6B35",
+        "secondary-yellow": "#F7931E",
+        "warm-brown": "#8B4513",
+        "cream-white": "#FFF8DC",
+        "cream-white-gradient-end": "#F5F5DC",
+        "spice-red": "#DC143C",
+        "mild-green": "#32CD32",
+        "text-dark": "#2C1810",
+        "text-light": "#FFFFFF",
+        "text-muted": "#6B6B6B",
+      },
+      fontSize: {
+        xs: "12px",
+        sm: "14px",
+        lg: "18px",
+        xl: "24px",
+        "2xl": "32px",
+      },
+      spacing: {
+        xs: "4px",
+        sm: "8px",
+        md: "16px",
+        lg: "24px",
+        xl: "32px",
+        "2xl": "48px",
+        "20": "80px", // Footer height
+      },
+      minWidth: {
+        "nav-item": "60px",
+      },
+      maxWidth: {
+        mobile: "375px",
+        content: "1200px",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      lineHeight: {
+        tight: "1.25",
+        relaxed: "1.75",
+      },
+      boxShadow: {
+        nav: "0 -4px 20px 0 rgba(139, 69, 19, 0.15)",
+      },
+      fontFamily: {
+        sans: ["Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans JP", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -74,7 +118,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
 } satisfies Config
 
 export default config

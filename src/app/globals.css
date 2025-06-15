@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans JP", sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -64,6 +74,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-cream-white text-text-dark;
   }
 }

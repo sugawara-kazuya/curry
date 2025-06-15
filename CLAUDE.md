@@ -55,7 +55,94 @@ app/
         └── page.tsx      # /register
 ```
 
-### 2. Server ComponentsとClient Components
+### 2. ページとコンポーネントの整理パターン
+
+App Routerでは、各ページ（`page.tsx`）に対応するコンポーネントを整理することで、保守性の高いコードベースを実現できます：
+
+#### ディレクトリ構造
+
+```
+app/
+├── about/
+│   └── page.tsx          # ページコンポーネント（薄く保つ）
+├── blog/
+│   └── page.tsx
+└── dashboard/
+    └── page.tsx
+
+components/
+├── about/                # /aboutページ専用のコンポーネント
+│   ├── AboutHero.tsx
+│   ├── AboutContent.tsx
+│   └── TeamSection.tsx
+├── blog/                 # /blogページ専用のコンポーネント
+│   ├── BlogList.tsx
+│   ├── BlogCard.tsx
+│   └── BlogFilters.tsx
+├── dashboard/            # /dashboardページ専用のコンポーネント
+│   ├── DashboardStats.tsx
+│   ├── RecentActivity.tsx
+│   └── UserProfile.tsx
+├── shared/               # 複数ページで使用される共有コンポーネント
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   └── Sidebar.tsx
+└── ui/                   # 基本的なUIコンポーネント（ボタン、モーダルなど）
+    ├── Button.tsx
+    ├── Card.tsx
+    └── Modal.tsx
+```
+
+#### ページコンポーネントの実装例
+
+```typescript
+// app/about/page.tsx
+import { AboutHero } from '@/components/about/AboutHero'
+import { AboutContent } from '@/components/about/AboutContent'
+import { TeamSection } from '@/components/about/TeamSection'
+
+// ページコンポーネントは薄く保つ
+export default function AboutPage() {
+  return (
+    <>
+      <AboutHero />
+      <AboutContent />
+      <TeamSection />
+    </>
+  )
+}
+```
+
+#### 専用コンポーネントの実装例
+
+```typescript
+// components/about/AboutContent.tsx
+export function AboutContent() {
+  // ロジックとスタイリングはここに集約
+  const { data } = await fetchAboutData()
+  
+  return (
+    <section className="py-16">
+      <div className="container mx-auto">
+        <h2 className="text-3xl font-bold">{data.title}</h2>
+        <p className="mt-4">{data.description}</p>
+      </div>
+    </section>
+  )
+}
+```
+
+#### 整理パターンのベストプラクティス
+
+1. **ページコンポーネントは薄く保つ**: ページファイル（`page.tsx`）は主にレイアウトとコンポーネントの組み合わせのみを担当
+2. **ロジックの分離**: ビジネスロジックやデータフェッチングは専用コンポーネントに移動
+3. **命名規則**: ページ名に対応したコンポーネントディレクトリを作成（例：`app/about/page.tsx` → `components/about/`）
+4. **再利用性の考慮**: 
+   - 単一ページ専用: `components/[page-name]/`
+   - 複数ページで使用: `components/shared/`
+   - 汎用UIパーツ: `components/ui/`
+
+### 3. Server ComponentsとClient Components
 
 デフォルトではすべてのコンポーネントはServer Componentsとして扱われます。Client Componentsを使用する場合は、ファイルの先頭に`'use client'`ディレクティブを追加します：
 
@@ -85,7 +172,7 @@ export function ClientComponent() {
 - **Server Components**: データフェッチ、静的コンテンツ、SEO重要なコンテンツ
 - **Client Components**: インタラクティブなUI、ブラウザAPIの使用、React Hooksの使用
 
-### 3. データフェッチングパターン
+### 4. データフェッチングパターン
 
 #### Server Componentsでのデータフェッチ
 
@@ -127,7 +214,7 @@ export function ClientPosts() {
 }
 ```
 
-### 4. レイアウトとテンプレート
+### 5. レイアウトとテンプレート
 
 #### layout.tsx (永続的レイアウト)
 
@@ -163,7 +250,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### 5. ナビゲーション
+### 6. ナビゲーション
 
 #### Linkコンポーネント（推奨）
 
@@ -199,7 +286,7 @@ export function NavigateButton() {
 }
 ```
 
-### 6. API Routes
+### 7. API Routes
 
 API Routesは`app/api/`ディレクトリ内の`route.ts`ファイルで定義します：
 
@@ -219,7 +306,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-### 7. エラーハンドリング
+### 8. エラーハンドリング
 
 ```typescript
 // app/posts/error.tsx
@@ -241,7 +328,7 @@ export default function Error({
 }
 ```
 
-### 8. ローディング状態
+### 9. ローディング状態
 
 ```typescript
 // app/posts/loading.tsx
